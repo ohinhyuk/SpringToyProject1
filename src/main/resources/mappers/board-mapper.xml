@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+    <insert id="insertBoard">
+        insert into ToyProject1 (name,gender,age)
+        values (#{name},#{gender},#{age})
+    </insert>
+    <update id="updateBoard">
+        update ToyProject1
+        set name = #{name} , gender = #{gender} , age = #{age}
+        where sid = #{sid}
+    </update>
+    <delete id="deleteBoard">
+        delete from ToyProject1 where sid = #{sid}
+    </delete>
+    <select id="getBoard" resultType="board">
+        select * from ToyProject1 where sid = #{sid}
+    </select>
+    <select id="getBoardList" resultType="board">
+        select  * from ToyProject1 order by sid desc
+    </select>
+</mapper>

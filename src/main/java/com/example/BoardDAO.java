@@ -1,5 +1,6 @@
 package com.example;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,30 +13,29 @@ public class BoardDAO {
     @Autowired
     private JdbcTemplate template;
 
+    @Autowired
+    SqlSession sqlSession;
     public int insertBoard(BoardVO vo){
-        String sql = "Insert into ToyProject1 (Name,Gender,Age) values('"
-                + vo.getName() + "', '"
-                + vo.getGender() + "', '"
-                + vo.getAge() + "')";
-        return template.update(sql);
+        int result = sqlSession.insert("Board.insertBoard",vo);
+        return result;
     }
     public int deleteBoard(int sid){
-        String sql = "delete from ToyProject1 where sid = " + sid;
-        return template.update(sql);
+        int result = sqlSession.delete("Board.deleteBoard",sid);
+        return result;
     }
     public int updateBoard(BoardVO vo){
-        String sql = "update ToyProject1 set name ='" + vo.getName()
-                + "', gender = '" + vo.getGender() + "' , age= '" + vo.getAge()
-                + "' where sid=" + vo.getSid();
-        return template.update(sql);
+        int result = sqlSession.update("Board.updateBoard",vo);
+        return result;
     }
     public BoardVO getBoard(int sid){
-        String sql = "select * from ToyProject1 where sid =" + sid;
-        return template.queryForObject(sql , new BoardRowMapper());
+        BoardVO one = sqlSession.selectOne("Board.getBoard",sid);
+        return one;
     }
 
     public List<BoardVO> getBoardList(){
-        String sql = "select * from ToyProject1 order by regdate desc";
-        return template.query(sql, new BoardRowMapper());
+        List<BoardVO> list = sqlSession.selectList("Board.getBoardList");
+        return list;
+
+
     }
 }
